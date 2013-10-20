@@ -19,18 +19,25 @@ from django.core.urlresolvers import reverse
 
 
 class SimpleTest(TestCase):
-    def test_es_popular(self):
-    	#si un enlace tiene menos de 11 votos no es popular
 
-    	#creo una categoria para la prueba
-		categoria = Categoria.objects.create(titulo="Cat de prueba")
+	#permite crear datos que se usen durante todas las pruebas
+	#aqui creamos categorias y usuarios y enlaces
+	#setUp se ejecuta antes de todas las pruebas
+	def setUp(self):
+		#creo una categoria para la prueba
+		self.categoria = Categoria.objects.create(titulo="Cat de prueba")
 
 		#creamos un usuario
-		usuario = User.objects.create_user(username="Luis",password="lueimg")
+		self.usuario = User.objects.create_user(username="luis",password="123")
 
-		#creamos el enlace
-		enlace = Enlace.objects.create(titulo="Prueba",enlace="http://google.com",votos=0,categoria=categoria,usuario=usuario)
+		
+	def test_es_popular(self):
+    	#si un enlace tiene menos de 11 votos no es popular
 
+    	#creamos el enlace
+		enlace = Enlace.objects.create(titulo="Prueba",enlace="http://google.com",votos=0,categoria=self.categoria,usuario=self.usuario)
+
+    	
 		#DIGO A LA PRUEBA QUE ASEGURE QUE ESTOS 2 TIPOS SON IGUALES
 		self.assertEqual(enlace.votos,0)
 
@@ -48,7 +55,7 @@ class SimpleTest(TestCase):
 		self.assertEqual(enlace.es_popular(), True)
 
 	#prueba de vistas para saber si tu pagina esta cargando
-    def test_views(self):
+	def test_views(self):
     	#se usa client.get para hace una peticion como cliente
 		res = self.client.get(reverse("home"))
 		self.assertEqual(res.status_code,200)
@@ -59,4 +66,10 @@ class SimpleTest(TestCase):
 		res = self.client.get(reverse("enlaces"))
 		self.assertEqual(res.status_code,200)
 
-		
+
+		#CON EL USUARIO CREADO EN SETUP ME LOGEO
+		self.assertTrue(self.client.login(username="luis",password="123"))
+		#ahora la pagina add deberia funcionar ya que estamos logeados
+		#pues si no nos logeamos nos sale redirecion 302 y no es igual a 200 con que estamos comparando
+		res = self.client.get(reverse("add"))
+		self.assertEqual(res.status_code,200)
