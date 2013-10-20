@@ -24,15 +24,7 @@
 			<figcaption></figcaption>
 		</figure>
 	</header>
-	<nav>
-		<ul>
-			<li id="flechita_nav"><a href="#"></a></li>
-			{% for cat in categorias %}
-			    <li><a href="{% url "categoria" cat.pk %}">{{cat}}</a></li>
-			{% endfor %}
-			<li id="publicar_nav"><a href="#">Publicar</a></li>
-		</ul>
-	</nav>
+	{% include "menu.html" %}
 
 	<section id="contenido">
 	    <form method="post">

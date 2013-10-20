@@ -4,7 +4,7 @@ from django.template.loader import get_template
 from django.template import Context
 from datetime import datetime
 #shortcuts
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,render
 #importamos los modelos
 from models import *
 
@@ -46,7 +46,7 @@ def hora_actual(request):
 def home(request):
 	categorias = Categoria.objects.all()
 	
-	# enlaces = Enlace.objects.all()
+	# enlaces = Enlace.objects.all()   
 	""" consulta con orden"""
 	enlaces = Enlace.objects.order_by("-votos").all()
 
@@ -55,7 +55,12 @@ def home(request):
 	# al contexto
 	#locals() es igual que diccionario ={"categorias":categorias,"enlaces":enlaces}
 	# locals tambien envia la variable request que contiene al usuario request.user
-	return render_to_response(template,locals())
+	#PERO SOLO ENVIA LOS DATOS LOCALES
+
+	#return render_to_response(template,locals())
+	
+	#PARA ENVIAR LOS DATOS GLOBALES SE DEBE USAR EL SHORTCUT RENDER
+	return render(request,template,locals())
 
 @login_required
 def plus(req,id_enlace):
@@ -80,7 +85,9 @@ def categoria(req,id_cat):
 	enlaces = Enlace.objects.filter(categoria = id_cat)
 
 	template = "index.html"
-	return render_to_response(template,locals())
+	#return render_to_response(template,locals())
+	#AGREGANDO VARIABLES GLOBALES
+	return render(request, template.locals())
 
 """ FUNCION PARA QUE LOS USUARIOS CREEN POST"""
 @login_required
