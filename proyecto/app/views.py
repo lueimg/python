@@ -23,7 +23,7 @@ from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
 
 #GENERAREMOS UN LISTADO DE ENLACES
-from django.views.generic import ListView
+from django.views.generic import ListView , DetailView
 
 
 """ PARA CREAR UN NUEVO USUARIO python manage.py createsuperuser """
@@ -131,3 +131,8 @@ class EnlaceListView(ListView):
 	def get_template_names(self):
 		return "index.html"
 
+#CREAMOS EL DETALLE DEL ENLACE, de 1 enlace
+class EnlaceDetailView(DetailView):
+	model=Enlace
+	def get_template_names(self):
+		return "index.html"

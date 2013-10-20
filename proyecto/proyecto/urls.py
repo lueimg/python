@@ -8,7 +8,7 @@ admin.autodiscover()
 from django.views.generic import TemplateView
 
 #OBTENEMOS EL LISTVIEWS DEL VIEW.PY QUE CREAMOS
-from app.views import EnlaceListView
+from app.views import EnlaceListView, EnlaceDetailView
 
 urlpatterns = patterns('',
     # Examples:
@@ -27,6 +27,9 @@ urlpatterns = patterns('',
 
     #GENERAMOS LA URL DEL LISTVIEWS enlace
     url(r'^enlaces/$',EnlaceListView.as_view(),name='enlaces'),
+
+    #MEDIANTE UNA EXPRESION REGULAR OBTENEMOS EL id DEL ENLACE
+    url(r'^enlaces/(?P<pk>[\d]+)$',EnlaceDetailView.as_view(),name='enlace'),
 
     # url(r'^proyecto/', include('proyecto.foo.urls')),
 
