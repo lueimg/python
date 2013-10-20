@@ -73,3 +73,31 @@ class SimpleTest(TestCase):
 		#pues si no nos logeamos nos sale redirecion 302 y no es igual a 200 con que estamos comparando
 		res = self.client.get(reverse("add"))
 		self.assertEqual(res.status_code,200)
+
+    #PRUEBAS A LOS FORMULARIOS
+	def test_add(self):
+		#CUENTO QUE NO HAYA ENLACES CREADOS
+        self.assertEqual(Enlace.objects.count(), 0)
+
+    	#CREO QUE LOS DATOS QUE VOY A ENVIAR COMO POST
+    	data ={}
+    	data["titulo"] = "Test titulo"
+    	#cuando lo guarda django siempre le pone al final "/"
+    	#por ello es bueno siempre ponerle / al final de una url
+    	data["enlace"] = "http://google.com/"
+
+    	data["categoria"] = self.categoria.id
+
+    	#enviamos los datos
+    	res = self.client.post(reverse("add"), data)
+
+    	#revisamos la repuesta
+    	self.assertEqual(res.status_code, 302)
+    	self.assertEqual(Enlace.objects.count(),1)
+
+    	#obtengo el enlace creado
+    	enlace = Enlace.objects.all()[0]
+
+    	self.assertEqual(enlace.titulo, data["titulo"])
+    	self.assertEqual(enlace.enlace, data["enlace"])
+    	self.assertEqual(enlace.categoria, self.categoria)
