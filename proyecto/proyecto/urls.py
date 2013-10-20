@@ -7,6 +7,8 @@ admin.autodiscover()
 #PERMITE USAR LA CLASE DE VIEWS TEMPLATES PARA SER REUTILIZADAS
 from django.views.generic import TemplateView
 
+#OBTENEMOS EL LISTVIEWS DEL VIEW.PY QUE CREAMOS
+from app.views import EnlaceListView
 
 urlpatterns = patterns('',
     # Examples:
@@ -22,6 +24,9 @@ urlpatterns = patterns('',
 
     #REUSAMOS LA PLANTILLA INDEX.HTML
     url(r'^about/$',TemplateView.as_view(template_name='index.html'),name='about'),
+
+    #GENERAMOS LA URL DEL LISTVIEWS enlace
+    url(r'^enlaces/$',EnlaceListView.as_view(),name='enlaces'),
 
     # url(r'^proyecto/', include('proyecto.foo.urls')),
 

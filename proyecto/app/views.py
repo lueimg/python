@@ -22,6 +22,10 @@ from django.template.context import RequestContext
 #funciona colocando antes de un def @login_required
 from django.contrib.auth.decorators import login_required
 
+#GENERAREMOS UN LISTADO DE ENLACES
+from django.views.generic import ListView
+
+
 """ PARA CREAR UN NUEVO USUARIO python manage.py createsuperuser """
 
 def hora_actual(request):
@@ -113,5 +117,17 @@ def add(req):
 	template = "form.html"
 	return render_to_response(template, context_instance = RequestContext(req,locals()))
 
+#CREAMOS UN LISTA
+class EnlaceListView(ListView):
+	#DEVOLVERA DEL MODELO ENLACE
+	model = Enlace
 
+	#HAY UN NOMBRE POR DEFECTO PERO EN EL TEMPLATE INDEX.HTML
+	#YA SE USA ENLACES
+	#HAY QUE CAMBIARLO
+	context_object_name = "enlaces"
+
+	#SOBREESCRIBIMOS LA PLANTILLA USADA POR LISTVIEWS
+	def get_template_names(self):
+		return "index.html"
 
