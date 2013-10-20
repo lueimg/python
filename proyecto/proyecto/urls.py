@@ -4,6 +4,10 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
+#PERMITE USAR LA CLASE DE VIEWS TEMPLATES PARA SER REUTILIZADAS
+from django.views.generic import TemplateView
+
+
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'app.views.home', name="home"),
@@ -15,6 +19,9 @@ urlpatterns = patterns('',
 
     #urls para el formulario
     url(r'^add/$','app.views.add', name="add"),
+
+    #REUSAMOS LA PLANTILLA INDEX.HTML
+    url(r'^about/$',TemplateView.as_view(template_name='index.html'),name='about'),
 
     # url(r'^proyecto/', include('proyecto.foo.urls')),
 

@@ -16,6 +16,7 @@ def menu(request):
 	menu = {"menu":[
 		{"name":"home","url":reverse("home")},
 		{"name":"add","url":reverse("add")},
+		{"name":"About","url":reverse("about")},
 	]}
 	#PARA RESALTAR UN ITEM DE MENU
 	for item in menu["menu"]:
