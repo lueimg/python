@@ -76,28 +76,28 @@ class SimpleTest(TestCase):
 
     #PRUEBAS A LOS FORMULARIOS
 	def test_add(self):
+		#TEMENOS QUE LOGEAR A UN USUARIO PRIMERO
+		self.assertTrue(self.client.login(username="luis",password="123"))
 		#CUENTO QUE NO HAYA ENLACES CREADOS
-        self.assertEqual(Enlace.objects.count(), 0)
+		self.assertEqual(Enlace.objects.count(), 0)
 
-    	#CREO QUE LOS DATOS QUE VOY A ENVIAR COMO POST
-    	data ={}
-    	data["titulo"] = "Test titulo"
-    	#cuando lo guarda django siempre le pone al final "/"
-    	#por ello es bueno siempre ponerle / al final de una url
-    	data["enlace"] = "http://google.com/"
+		#CREO QUE LOS DATOS QUE VOY A ENVIAR COMO POST
+		data ={}
+		data["titulo"] = "Test titulo"
+		#cuando lo guarda django siempre le pone al final "/"
+		#por ello es bueno siempre ponerle / al final de una url
+		data["enlace"] = "http://google.com/"
 
-    	data["categoria"] = self.categoria.id
+		data["categoria"] = self.categoria.id
 
-    	#enviamos los datos
-    	res = self.client.post(reverse("add"), data)
+		#enviamos los datos
+		res = self.client.post(reverse("add"), data)
+		#revisamos la repuesta
+		self.assertEqual(res.status_code, 302)
+		self.assertEqual(Enlace.objects.count(),1)
 
-    	#revisamos la repuesta
-    	self.assertEqual(res.status_code, 302)
-    	self.assertEqual(Enlace.objects.count(),1)
-
-    	#obtengo el enlace creado
-    	enlace = Enlace.objects.all()[0]
-
-    	self.assertEqual(enlace.titulo, data["titulo"])
-    	self.assertEqual(enlace.enlace, data["enlace"])
-    	self.assertEqual(enlace.categoria, self.categoria)
+		#obtengo el enlace creado
+		enlace = Enlace.objects.all()[0]
+		self.assertEqual(enlace.titulo, data["titulo"])
+		self.assertEqual(enlace.enlace, data["enlace"])
+		self.assertEqual(enlace.categoria, self.categoria)
